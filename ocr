@@ -1,0 +1,21 @@
+import pytesseract
+from PIL import Image
+from pdf2image import convert_from_path
+from fpdf import FPDF
+import os
+
+def ocr_pdf_folder(folder_path):
+    for filename in os.listdir(folder_path):
+        if filename.endswith('.pdf'):
+            pdf_path = os.path.join(folder_path, filename)
+            images = convert_from_path(pdf_path)
+            text = ''
+            for image in images:
+                text += pytesseract.image_to_string(image)
+            pdf_filename = os.path.splitext(filename)[0] + '_ocr.pdf'
+            pdf_path = os.path.join(folder_path, pdf_filename)
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font('Arial', size=12)
+            pdf.multi_cell(0, 10, text)
+            pdf.output(pdf_path)
