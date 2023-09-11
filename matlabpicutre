@@ -1,0 +1,33 @@
+% Set the path to the image file
+imagePath = 'C:\path\to\image.jpg';
+
+% Set the path to the Excel file
+excelPath = 'C:\path\to\excel.xlsx';
+
+% Set the sheet name
+sheetName = 'Sheet1';
+
+% Set the cell where the image will be inserted
+cell = 'B2';
+
+% Create an ActiveX server
+excel = actxserver('Excel.Application');
+
+% Open the Excel file
+workbook = excel.Workbooks.Open(excelPath);
+
+% Get the sheet
+sheet = workbook.Sheets.Item(sheetName);
+
+% Get the cell range
+range = sheet.Range(cell);
+
+% Insert the picture
+sheet.Shapes.AddPicture(imagePath, 0, 1, range.Left, range.Top, 100, 100);
+
+% Save and close the Excel file
+workbook.Save;
+workbook.Close;
+
+% Quit the ActiveX server
+excel.Quit;
